@@ -1,13 +1,36 @@
 import React from 'react'
+import './App.css'
+import axios from 'axios' //use this to make a get request from api
 
 class App extends React.Component {
-    state = {
-        advice: ' '
+    state = { advice: ' ' }
+
+    componentDidMount() {
+        this.fetchAdvice();
+    }
+
+    fetchAdvice = () => {
+        axios.get('http://api.adviceslip.com/advice')
+            .then((response) => {
+                const { advice } = response.data.slip
+                this.setState({ advice })
+                console.log(advice)
+            }).catch((error) => {
+            console.log(error)
+        })
+
     }
 
     render() {
+        const { advice } = this.state;
         return ( 
-                <h1>APP</h1>
+            <>
+            <div className='app'> 
+                <div className='card'>
+                    <h1>{this.state.advice}</h1>
+                </div>
+            </div>
+            </>
             )
     }
 }
